@@ -21,5 +21,6 @@ module.exports = {
       'error',
       'always'
     ]
-  }
+  },
+  'ignorePatterns': ['03-files-in-folder/secret-folder/script.js'],
 };
