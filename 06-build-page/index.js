@@ -1,13 +1,11 @@
 const {mkdir, readdir, rm} = require('fs/promises');
-const {join} = require('path');
+const {join, resolve} = require('path');
 const {createReadStream, createWriteStream,} = require( 'fs');
-
-const path = require ("path");
 const { appendFile, truncate, writeFile, stat } = require ("fs");
 
 
+
 async function copyDir  (from, to) {
-    const error = new Error('FS operation failed');
     const pathFrom = join(__dirname, from);
     const pathTo = join(__dirname, to);
 
@@ -26,27 +24,27 @@ async function copyDir  (from, to) {
             readStream.on('end', () => {
                 writeStream.end();
             });
-            readStream.on('error', () => {
-                throw error;
+            readStream.on('error', (err) => {
+                throw err;
             });
             } else if(obj.isDirectory()) {
                 await mkdir(join(pathTo, obj.name), {recursive: true});
                 await copyDir(join(from, obj.name), join(to, obj.name));
             }
         }
-    } catch {
-        throw error;
+    } catch (err) {
+        console.error('Error', err);
     }
 };
 
 async function createBundle() {
 	try {
 		const files = await readdir(
-            path.resolve(__dirname + "/" + "styles"), {withFileTypes: true});
+            resolve(__dirname + "/" + "styles"), {withFileTypes: true});
 
-        const pathDir =  path.resolve(__dirname + "/" + "styles");
+        const pathDir =  resolve(__dirname + "/" + "styles");
 
-        const distDir =  path.resolve(__dirname + "/" + "project-dist");
+        const distDir =  resolve(__dirname + "/" + "project-dist");
 
         const fileName = distDir + "/" + "bundle.css"
 
@@ -67,8 +65,8 @@ async function createBundle() {
             }
         }));
         console.log(`\x1b[33m Success!\x1b[0m`);
-	} catch (error) {
-		console.error('Error', error);
+	} catch (err) {
+		console.error('Error', err);
 	}
 }
 
@@ -120,8 +118,8 @@ async function build() {
             });
             }
         });
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.error('Error', err);
     }
 };
 
