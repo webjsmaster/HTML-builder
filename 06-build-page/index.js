@@ -1,7 +1,7 @@
 const {mkdir, readdir, rm} = require('fs/promises');
 const {join, resolve} = require('path');
-const {createReadStream, createWriteStream,} = require( 'fs');
-const { appendFile, truncate, writeFile, stat } = require ('fs');
+const { appendFile, truncate, writeFile, unlink,
+  stat, createReadStream, createWriteStream, readdir: readdirFs, rmdir} = require ('fs');
 
 
 
@@ -46,7 +46,7 @@ async function createBundle() {
 
     const distDir =  resolve(__dirname + '/' + 'project-dist');
 
-    const fileName = distDir + '/' + 'bundle.css';
+    const fileName = distDir + '/' + 'style.css';
 
     writeFile(fileName, '', { flag: 'wx' }, function (err) {
       if (err) truncate(fileName, () => {});
