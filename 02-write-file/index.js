@@ -27,6 +27,10 @@ rl.on('line', async function (args) {
     }
   });
 
+  if (args === "exit") {
+    exit();
+  }
+
   rl.setPrompt('\x1b[36m> \x1b[0m');
   rl.prompt();
 });
