@@ -1,9 +1,10 @@
 const fs = require('fs');
-const { copyFile, mkdir } = require('fs/promises');
+const { copyFile, mkdir, rm } = require('fs/promises');
 
 async function copyDir () {
   const newDir = __dirname + '/files-copy';
   const dir = __dirname + '/files';
+  await rm(newDir, {recursive: true, force: true});
 
   fs.readdir( dir, function ( err, files) {
     if (err || !files.length) {
